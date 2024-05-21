@@ -3,27 +3,24 @@ import java.util.List;
 
 class Solution {
     public List<List<Integer>> subsets(int[] nums) {
-        List<List<Integer>> resultList = new ArrayList<>();
-        backtrack(nums, resultList, new ArrayList<>(), 0);
-        return resultList;
+        List<List<Integer>> res = new ArrayList<>();
+        res.add(new ArrayList<>());
+        for(int i = 0; i < nums.length; i++) {
+            List<Integer> cur = new ArrayList<>();
+            cur.add(nums[i]);
+            dfs(nums, res, i, cur );
+        }
+
+        return res;
     }
+    void dfs(int[] nums, List<List<Integer>> res, int i, List<Integer> cur) {
 
-    private void backtrack(int[] nums, List<List<Integer>> resultList, List<Integer> currentList, int i){
-        if(i == nums.length){
-            if(!resultList.contains(currentList)){
-                resultList.add(new ArrayList<>(currentList));
-            }
-            return;
+
+        for(int j = i + 1; j < nums.length; j++) {
+            cur.add(nums[j]);
+            dfs(nums, res, j, cur);
+            cur.remove(cur.size() - 1);
         }
-        if(!resultList.contains(currentList)){
-            resultList.add(new ArrayList<>(currentList));
-        }
-
-        currentList.add(nums[i]);
-        backtrack(nums, resultList, currentList, i + 1);
-        currentList.remove(currentList.size() - 1);
-
-        backtrack(nums, resultList, currentList, i + 1);
-
+        res.add(new ArrayList<>(cur));
     }
 }
